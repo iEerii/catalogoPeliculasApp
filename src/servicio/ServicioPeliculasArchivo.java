@@ -56,7 +56,7 @@ public class ServicioPeliculasArchivo implements IServicioPeliculas{
             //Agregar la pelicula(toString)
             salida.println(pelicula.toString());
             salida.close();
-            System.out.println("Se agrego al archivo" + pelicula);
+            System.out.println("Se agrego al archivo: " + pelicula);
         } catch (Exception e){
             System.out.println("Ocurrio un error al agregar pelicula" + e.getMessage());
         }
@@ -64,6 +64,35 @@ public class ServicioPeliculasArchivo implements IServicioPeliculas{
 
     @Override
     public void buscarPelicula(Pelicula pelicula) {
-
+        var archivo = new File(NOMBRE_ARCHIVO);
+        try{
+            //Se abre el archivo para lectura liena por linea
+            var entrada = new BufferedReader(new FileReader(archivo));
+            String lineaTexto;
+            lineaTexto = entrada.readLine();
+            var indice = 1;
+            var encontrada = false;
+            var peliculaBuscar = pelicula.getNombre();
+            while(lineaTexto != null){
+                //Se busca sin importar mayusculas o minusculas
+                if(peliculaBuscar != null && peliculaBuscar.equalsIgnoreCase(lineaTexto)){
+                    encontrada = true;
+                    break;
+                }
+                //Se lee la siguiente linea antes de la siguiente iteracion
+                lineaTexto = entrada.readLine();
+                indice++;
+            }
+            //Se imprimen los resultados de la busqueda
+            if(encontrada)
+                System.out.println("Pelicula " + lineaTexto
+                        + " encontrada - linea " + indice);
+            else
+                System.out.println("No se encontró la pelicula: "
+                        + pelicula.getNombre());
+            entrada.close();
+        }catch (Exception e){
+            System.out.println("Ocurrio un error al encontrar el archivo: " + e.getMessage());
+        }
     }
 }
