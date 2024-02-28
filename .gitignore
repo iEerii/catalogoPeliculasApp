@@ -30,3 +30,4 @@ bin/
 
 ### user-specific-stuff ###
 .idea/
+*.txt
